@@ -1,0 +1,34 @@
+th {
+  .btn {
+    padding: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.icon-arrow {
+  display: flex;
+  margin-left: 5px;
+
+  &:before {
+    font-family: 'icomoon' !important;
+    content: "\e900";
+    font-size: 12px;
+    font-weight: 600;
+    transition: color .3s;
+  }
+
+  &:hover {
+    &:before {
+      color: #fd0303;
+    }
+  }
+}
+
+.no-users {
+  font-size: 30px;
+  text-align: center;
+  font-weight: 600;
+}

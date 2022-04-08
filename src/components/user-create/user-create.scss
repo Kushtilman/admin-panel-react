@@ -1,0 +1,18 @@
+.create-form {
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid #bab2b2;
+  border-radius: 10px;
+  padding: 20px;
+
+  .form-label {
+    margin-bottom: 0;
+  }
+}
+
+.input-error {
+  color: #fd0303;
+  font-size: 12px;
+  font-weight: 600;
+  vertical-align: top;
+}

@@ -1,0 +1,26 @@
+.header {
+  background: #bab2b2;
+
+  a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    transition: color .3s;
+    &:hover {
+      color: brown;
+    }
+  }
+}
+
+.nav-bar {
+  a {
+    margin-right: 20px;
+  }
+}
+
+.admin-info {
+  a {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
