@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import UserItem from "../user-item/user-item";
 import {Table} from 'react-bootstrap';
-import {deleteUser, editUser, getAllUsers} from '../../services/api-service';
+import {deleteUser, getAllUsers} from '../../services/api-service';
 
 import './user-list.scss';
 import Loading from "../loading/loading";
 import TablePaginationDemo from "../pagination/pagination";
-import {useSearchParams, useParams, Link} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 import Search from "../search/search";
 
 const UserList = () => {
@@ -14,7 +14,7 @@ const UserList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const sortParams = searchParams.get("sort") || '';
-  // console.log("sortParams", sortParams)
+  console.log("sortParams", sortParams)
 
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,12 +27,24 @@ const UserList = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getAllUsers(`admin?sort=${type},${sort}`)
+    getAllUsers(`admin?sort=${sort}&type=${type}&limit=${page}`)
       .then((data) => {
         setUsers(data.data)
         setIsLoading(false);
       })
-  }, [type, sort])
+  }, [type, sort, page])
+
+  //pagination
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    setSearchParams({page: newPage + 1});
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    const page = event.target.value;
+    setRowsPerPage(parseInt(page));
+    setSearchParams({limit: page});
+  };
 
   //sorting
   const handleSort = (newType) => {
@@ -48,6 +60,7 @@ const UserList = () => {
     } else {
       setSort('ASC')
     }
+    setSearchParams({sort: sort});
   }
 
   //delete user
@@ -62,33 +75,6 @@ const UserList = () => {
             setModal(false);
           })
       })
-  };
-
-  // //edit user
-  // const edit = (id) => {
-  //   setIsLoading(true);
-  //   editUser(`admin/${id}`)
-  //     .then(() => {
-  //       getAllUsers(`admin?sort=${type},${sort}`)
-  //         .then((data) => {
-  //           setUsers(data.data)
-  //           console.log(setUsers(data.data))
-  //           setIsLoading(false);
-  //         })
-  //     })
-  // };
-
-  //pagination
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    setSearchParams({page: newPage + 1});
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    const page = event.target.value;
-
-    setRowsPerPage(parseInt(page));
-    setSearchParams({limit: page});
   };
 
   //search
@@ -147,8 +133,8 @@ const UserList = () => {
                   setVisible={setModal}
                 />)
               : <tr className='no-users'>
-                <td colSpan='4'>No Users!</td>
-              </tr>
+                  <td colSpan='4'>No Users!</td>
+                </tr>
             }
             </tbody>
           </Table>
@@ -160,6 +146,8 @@ const UserList = () => {
             page={page}
             rowsPerPage={rowsPerPage}
           />
+
+          <button onClick={handleChangeRowsPerPage()}>+</button>
         </>
       }
     </div>

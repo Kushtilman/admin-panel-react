@@ -1,10 +1,10 @@
-import React from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import React, {useContext} from 'react';
+import {NavLink, useNavigate, Link} from "react-router-dom";
 import './header.scss';
 import {logout} from "../../services/api-service";
+import {MeContext} from "../context/app-context";
 
 const Header = () => {
-
   const userLogin = localStorage.getItem('accessToken');
   let navigate = useNavigate();
 
@@ -25,20 +25,26 @@ const Header = () => {
     }
   }
 
+  const authState = useContext(MeContext);
+
+  const btn = () => {
+    console.log(authState)
+  }
+
   return (
     <header className='header'>
       <div className="container">
         <div className='row'>
           <div className="col-10 nav-bar">
             {userLogin
-              ? <Link to="/login" onClick={handleLogout}>Logout</Link>
-              : <Link to="/login" onClick={redirectIsLogout}>Login</Link>
+              ? <NavLink to="/login" onClick={handleLogout}>Logout</NavLink>
+              : <NavLink to="/login" onClick={redirectIsLogout}>Login</NavLink>
             }
-            <Link to="/user-list">User list</Link>
-            <Link to="/create-user">Create new User</Link>
+            <NavLink to="/user-list">User list</NavLink>
+            <NavLink to="/create-user">Create new User</NavLink>
           </div>
           <div className="col-2 admin-info">
-            <Link to="/admin-info">Admin info</Link>
+            <NavLink to="/admin-info">Admin info</NavLink>
           </div>
         </div>
       </div>

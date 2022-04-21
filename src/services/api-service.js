@@ -10,7 +10,6 @@ const requestTemplate = async (url, method, body) => {
 
   const requestMethod = {
     method,
-    // cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': token ? token.replace(/["\']/g, '') : '',
@@ -40,14 +39,13 @@ const requestTemplate = async (url, method, body) => {
     response: async function (response) {
       if (response.status === 401) {
         const {url, config} = originalRequest;
-
         const resRefreshToken = await refresh('admin/refresh-token')
           .then((response) => {
             return response;
           });
-        if (!resRefreshToken.success) {
-          return Promise.reject(resRefreshToken);
-          window.location = 'http://localhost:3000/login';
+        if (!resRefreshToken?.success) {
+          window.location.href = 'http://localhost:3000/login';
+          // return Promise.reject(resRefreshToken);
         } else {
           const accessToken = resRefreshToken.data.accessToken;
           config['headers']['Authorization'] = `Bearer ${accessToken}`;
@@ -87,3 +85,5 @@ export const editUser = async (params, userName, email, password) =>
   await requestTemplate(params, methodsCase.put, {userName, email, password})
 
 export const refresh = async (params = '') => await requestTemplate(params, methodsCase.post)
+
+export const getAuthAdmin = async (params = '') => await requestTemplate(params, methodsCase.get)

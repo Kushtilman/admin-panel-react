@@ -2,15 +2,19 @@ import React from 'react';
 
 import Header from "./components/header/header";
 import Router from "./services/router";
+import AppContext from "./components/context/app-context";
 
 const App = () => {
+
   return (
-    <div className='App'>
-      <Header/>
-      <div className="content">
-        <Router />
+    <AppContext>
+      <div className='App'>
+        <Header/>
+        <div className="content">
+          <Router/>
+        </div>
       </div>
-    </div>
+    </AppContext>
   );
 };
 
