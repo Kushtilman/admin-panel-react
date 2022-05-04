@@ -1,11 +1,11 @@
 import React from 'react';
 import st from './modal.module.scss';
+import PropTypes from 'prop-types';
 
-const Modal = ({children, visible, setVisible, user, removeUser, modalAttributes}) => {
-  const rootClass = [st.modal]
-
+const Modal = ({children, visible, setVisible}) => {
+  const rootClass = [st.modal];
   if (visible) {
-    rootClass.push(st.active)
+    rootClass.push(st.active);
   }
 
   return (
@@ -13,16 +13,16 @@ const Modal = ({children, visible, setVisible, user, removeUser, modalAttributes
       <div onClick={(e) => e.stopPropagation()}>
         <div className={st.content}>
           {children}
-          <h3>{modalAttributes.title}</h3>
-          <span className={st.modalContent}>{modalAttributes.description}</span>
-          <div>
-            <button onClick={() => setVisible(false)} className="btn btn-secondary">Back</button>
-            <button onClick={() => removeUser(user.id)} className="btn btn-primary">{modalAttributes.btnActive}</button>
-          </div>
         </div>
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.any,
+  visible: PropTypes.bool,
+  setVisible: PropTypes.func,
 };
 
 export default Modal;

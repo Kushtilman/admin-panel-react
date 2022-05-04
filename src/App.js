@@ -1,14 +1,13 @@
 import React from 'react';
 
-import Header from "./components/header/header";
-import Router from "./services/router";
-import AppContext from "./components/context/app-context";
+import Header from './components/header/header';
+import Router from './services/router';
+import AppContext from './components/context/app-context';
 
 const App = () => {
-
   return (
     <AppContext>
-      <div className='App'>
+      <div className="App">
         <Header/>
         <div className="content">
           <Router/>

@@ -1,15 +1,26 @@
 .header {
   background: #bab2b2;
 
-  a {
-    text-decoration: none;
+  a,
+  .admin {
     color: #fff;
     font-weight: 600;
     transition: color .3s;
+
     &:hover,
     &.active {
       color: brown;
     }
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .admin {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
   }
 }
 

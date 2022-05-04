@@ -1,19 +1,23 @@
 import React from 'react';
-
 import st from './search.module.scss';
+import PropTypes from 'prop-types';
 
-const Search = ({search, setSearch}) => {
-
+const Search = ({searchTerm, handleSearch}) => {
   return (
     <input
       type="search"
       name="search"
       placeholder="Search..."
       className={st.search}
-      value={search}
-      onChange={e => setSearch(e.target.value)}
+      value={searchTerm}
+      onChange={handleSearch}
     />
   );
+};
+
+Search.propTypes = {
+  searchTerm: PropTypes.string,
+  handleSearch: PropTypes.func,
 };
 
 export default Search;

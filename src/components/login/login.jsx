@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import {useLocation, useNavigate} from 'react-router-dom';
-import {getAuthAdmin, login} from "../../services/api-service";
+import {useNavigate} from 'react-router-dom';
+import {getAuthAdmin, login} from '../../services/api-service';
 
 import './login.scss';
-import {MeContext} from "../context/app-context";
+import {MeContext} from '../context/app-context';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,14 +14,14 @@ const Login = () => {
 
   const adminState = useContext(MeContext);
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   // const location = useLocation();
   // const fromPage = location.state?.from.pathname || '/';
   // console.log(location);
 
   const validateForm = () => {
     return email.length > 0 && password.length > 0;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,20 +34,20 @@ const Login = () => {
           localStorage.removeItem('accessToken');
         } else {
           localStorage.setItem('accessToken', `bearer ${JSON.stringify(response.data.accessToken)}`);
-          // await getAuthAdmin('admin/me').then((response) => {
-          //   adminState.handleAdmin(response)
-          // })
-          navigate('/user-list')
+          await getAuthAdmin('admin/me').then((response) => {
+            adminState.handleAdmin(response);
+          });
+          navigate('/user-list');
         }
       } catch (e) {
-        console.log(e.response?.error?.message)
+        console.log(e.response?.error?.message);
       }
-    })
+    });
   };
 
   return (
     <div className="login">
-      <Form onSubmit={handleSubmit} autoComplete='off'>
+      <Form onSubmit={handleSubmit} autoComplete="off">
         <div className="block-error">
           <p>{error}</p>
         </div>

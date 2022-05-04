@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {createUser, editUser, viewUser} from "../../services/api-service";
-import {useNavigate, useParams} from "react-router-dom";
+import {createUser, editUser, viewUser} from '../../services/api-service';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import './user-create.scss';
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 const UserCreate = () => {
   const [email, setEmail] = useState('');
@@ -19,17 +19,17 @@ const UserCreate = () => {
   const [formValid, setFormValid] = useState(false);
   const params = useParams();
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const isCreate = window.location.href.includes('create-user');
 
   useEffect(() => {
     if (emailError || userNameError || passwordError) {
-      setFormValid(false)
+      setFormValid(false);
     } else {
-      setFormValid(true)
+      setFormValid(true);
     }
-  }, [emailError, passwordError, userNameError])
+  }, [emailError, passwordError, userNameError]);
 
   useEffect(() => {
     if (!isCreate) {
@@ -38,95 +38,98 @@ const UserCreate = () => {
           const res = data.data;
           setEmail(res.email);
           setUserName(res.userName);
-        })
+        });
     }
-  }, [])
+  }, []);
 
   // form validation start
   const emailHandler = (e) => {
-    setEmail(e.target.value)
+    const value = e.target.value;
+    setEmail(value);
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(String(e.target.value).toLowerCase())) {
-      setEmailError('Некорректный email!')
+    if (!re.test(String(value).toLowerCase())) {
+      setEmailError('Некорректный email!');
     } else {
-      setEmailError('')
+      setEmailError('');
     }
-  }
+  };
 
   const userNameHandler = (e) => {
-    setUserName(e.target.value)
-    if (e.target.value.length < 6 || e.target.value.length > 10) {
-      setUserNameError('User name должен быть не меньше 6 и не больше 10 символов!')
-      if (!e.target.value) {
-        setUserNameError('Поле User name не должен быть пустым!')
+    const value = e.target.value;
+    setUserName(value);
+    if (value.length < 6 || value.length > 10) {
+      setUserNameError('User name должен быть не меньше 6 и не больше 10 символов!');
+      if (!value) {
+        setUserNameError('Поле User name не должен быть пустым!');
       }
     } else {
-      setUserNameError('')
+      setUserNameError('');
     }
-  }
+  };
 
   const passwordHandler = (e) => {
-    setPassword(e.target.value)
-    if (e.target.value.length < 6 || e.target.value.length > 10) {
-      setPasswordError('Password должен быть не меньше 6 и не больше 10 символов!')
-      if (!e.target.value) {
-        setPasswordError('Password не должен быть пустым!')
+    const value = e.target.value;
+    setPassword(value);
+    if (value.length < 6 || value.length > 10) {
+      setPasswordError('Password должен быть не меньше 6 и не больше 10 символов!');
+      if (!value) {
+        setPasswordError('Password не должен быть пустым!');
       }
     } else {
-      setPasswordError('')
+      setPasswordError('');
     }
-  }
+  };
 
   const blurHandler = (e) => {
     switch (e.target.name) {
       case 'email':
-        setEmailDirty(true)
-        break
+        setEmailDirty(true);
+        break;
       case 'userName':
-        setUserNameDirty(true)
-        break
+        setUserNameDirty(true);
+        break;
       case 'password':
-        setPasswordDirty(true)
-        break
+        setPasswordDirty(true);
+        break;
     }
-  }
+  };
   // form validation end
 
-  //create user
+  // create user
   const addUser = (e) => {
     e.preventDefault();
 
     createUser('admin', userName, email, password)
-      .then(() => navigate('/user-list'))
+      .then(() => navigate('/user-list'));
   };
 
-  //edit user
+  // edit user
   const editThisUser = (e) => {
     e.preventDefault();
 
     editUser(`admin/${params.id}`, userName, email, password)
-      .then(() => navigate('/user-list'))
+      .then(() => navigate('/user-list'));
   };
 
   return (
-    <div className='container'>
-      <Form onSubmit={isCreate ? addUser : editThisUser} className='create-form' autoComplete='off'>
-        {isCreate
-          ? <h2>Create user</h2>
-          : <h2>Edit user</h2>
+    <div className="container">
+      <Form onSubmit={isCreate ? addUser : editThisUser} className="create-form" autoComplete="off">
+        {isCreate ?
+          <h2>Create user</h2> :
+          <h2>Edit user</h2>
         }
         <Form.Group size="lg" controlId="email" className="form-group">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             placeholder="Enter email"
-            name='email'
+            name="email"
             value={email}
-            onChange={e => emailHandler(e)}
-            onBlur={e => blurHandler(e)}
+            onChange={(e) => emailHandler(e)}
+            onBlur={(e) => blurHandler(e)}
           />
 
-          {(emailError && emailDirty) && <span className='input-error'>{emailError}</span>}
+          {(emailError && emailDirty) && <span className="input-error">{emailError}</span>}
         </Form.Group>
 
         <Form.Group size="lg" controlId="userName" className="form-group">
@@ -134,13 +137,13 @@ const UserCreate = () => {
           <Form.Control
             type="text"
             placeholder="Enter user name"
-            name='userName'
+            name="userName"
             value={userName}
-            onChange={e => userNameHandler(e)}
-            onBlur={e => blurHandler(e)}
+            onChange={(e) => userNameHandler(e)}
+            onBlur={(e) => blurHandler(e)}
           />
 
-          {(userNameError && userNameDirty) && <span className='input-error'>{userNameError}</span>}
+          {(userNameError && userNameDirty) && <span className="input-error">{userNameError}</span>}
         </Form.Group>
 
         <Form.Group size="lg" controlId="password" className="form-group">
@@ -148,13 +151,13 @@ const UserCreate = () => {
           <Form.Control
             type="password"
             placeholder="Enter password"
-            name='password'
+            name="password"
             value={password}
-            onChange={e => passwordHandler(e)}
-            onBlur={e => blurHandler(e)}
+            onChange={(e) => passwordHandler(e)}
+            onBlur={(e) => blurHandler(e)}
           />
 
-          {(passwordError && passwordDirty) && <span className='input-error'>{passwordError}</span>}
+          {(passwordError && passwordDirty) && <span className="input-error">{passwordError}</span>}
         </Form.Group>
 
         <Button size="md" type="submit" disabled={!formValid}>
